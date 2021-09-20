@@ -1,12 +1,12 @@
 //60 Second Countdown Timer
 const timeEl = document.querySelector('.time');
-let secondsLeft = 60;
 
 function quizTime () {
+    let secondsLeft = 60;
     let timerInterval = setInterval(function() {
         secondsLeft--;
         timeEl.textContent = secondsLeft + 's to finish!';
-
+        
         if(secondsLeft === 0) {
             clearInterval(timerInterval);
         }
@@ -18,26 +18,7 @@ function quizTime () {
 const beginQuizBtn = document.querySelector('#begin-quiz');
 const questionsContainerEl = document.querySelector('#questions-box');
 
-
-beginQuizBtn.addEventListener('click', beginQuiz);
-let randomQuestions, currentQuestion
-
-function beginQuiz () { 
-    quizTime()
-    beginQuizBtn.classList.add('hide')
-    randomQuestions = qna.sort(() => Math.floor(Math.random() * 7))
-    currentQuestion = Math.floor(Math.random() * 7)
-    questionsContainerEl.classList.remove('hide')
-    setNextQuestion()
-}
-/////////////////
-
-
-//must be able to show the next question
-
-const questionEl = document.querySelector('#question')
-let btnGridEl = document.querySelector('.btn-grid')
-let qna = [
+const qna = [
     {
         question: 'What year was JavaScript created?',
         answers: [
@@ -93,9 +74,24 @@ let qna = [
     }
 ]
 
-function setNextQuestion() {
-    showQuestion(randomQuestions[currentQuestion])
+document.querySelector('#question').innerHTML = qna
+
+function beginQuiz () { 
+    quizTime()
+    beginQuizBtn.classList.add('hide')
+    questionsContainerEl.classList.remove('hide')
+    Object.values(qna)
 }
+
+
+
+beginQuizBtn.addEventListener('click', beginQuiz);
+/////////////////
+
+//must be able to show the next question
+
+const questionEl = document.querySelector('#question')
+let btnGridEl = document.querySelector('.btn-grid')
 
 function showQuestion(question) {
     questionEl.innerText = question.question
@@ -115,12 +111,15 @@ function showQuestion(question) {
 
 
 function choosingAnswer(e) {
-
+    
 }
 
 ////////////////////////////
 
-// use to show buttons later
-// const done = document.querySelector('.done')
-// const goBack = document.querySelector('#end-btn')
-///////////////
+let done = document.querySelector('.done')
+let goBack = document.querySelector('#end-btn')
+
+function finisedQuiz () {
+    done.classList.remove('hide')
+    goBack.classList.remove('hide')
+}
