@@ -1,0 +1,53 @@
+*, *::before, *::after {
+    box-sizing: :border-box;
+    font-family: monospace;
+}
+
+body {
+    padding: 0;
+    margin: 0;
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    align-items: center;
+    flex-direction: column;
+    background-color: rgb(100, 100, 100);
+}
+
+.highscr-time {
+    width: 100vw;
+    height: 20vh;
+    display: flex;
+    justify-content: space-between;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    width: 800px;
+    max-width: 80%;
+}
+
+.btn-grid {
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    gap: 10px;
+    margin: 10px 0;
+}
+
+.begin-btn, .end-btn {
+    font-size: 1.5rem;
+    font-weight: bold;
+    padding: 5px 10px;
+}
+
+.start {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 25px;
+}
+
+.hide {
+    display: none;
+}
