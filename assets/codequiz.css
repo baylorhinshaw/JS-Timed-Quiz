@@ -35,6 +35,11 @@ body {
     margin: 10px 0;
 }
 
+#mult-answers {
+    height: 20px;
+    width: auto;
+}
+
 .begin-btn, .end-btn {
     font-size: 1.5rem;
     font-weight: bold;
