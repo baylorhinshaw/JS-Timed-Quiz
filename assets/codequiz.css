@@ -14,7 +14,7 @@ body {
     background-color: rgb(100, 100, 100);
 }
 
-.highscr-time {
+.timer {
     width: 100vw;
     height: 20vh;
     display: flex;
