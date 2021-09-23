@@ -1,15 +1,13 @@
-let timeEl = document.querySelector('.time');
 let score = 0;
 let currentQuestion = 0;
 let secondsLeft = 60;
+let timeEl = document.querySelector('.time');
 let beginQuizBtn = document.querySelector('#begin-quiz');
 let questionsContainerEl = document.querySelector('#questions-box');
 let questionContainerEl = document.getElementById('ans-btns')
 let questionTitleEl = document.getElementById('question-display');
 let done = document.querySelector('.done');
-let goBack = document.querySelector('#end-btn');
 let resultCont = document.getElementById('result');
-let newEl;
 
 const qna = [{
     question: 'What year was JavaScript created?',
@@ -77,73 +75,55 @@ function beginQuiz() {
     quizTime();
     beginQuizBtn.classList.add('hide');
     questionsContainerEl.classList.remove('hide');
+    renderQuestion();
+}
 
-
-    let firstQuestion = qna[0];
+function renderQuestion() {
+    let firstQuestion = qna[currentQuestion];
     let options = firstQuestion.options;
     let title = firstQuestion.question;
 
     questionTitleEl.textContent = title;
+    removeAllChildNodes(questionContainerEl);
 
     for (let i = 0; i < options.length; i++) {
         let answer = options[i];
         let newEl = document.createElement('button');
         newEl.className = 'ans-btn';
         newEl.textContent = answer;
-        questionsContainerEl.append(newEl);
+        questionContainerEl.append(newEl);
 
         if (newEl) {
-            let nextQuestion = 1;
             newEl.addEventListener('click', function (e) {
-                correctOrIncorrectAnswerSelected(answer, options[firstQuestion.answer], nextQuestion)
+                answerSelected(answer, options[firstQuestion.answer])
             })
         }
     }
 }
 
+function removeAllChildNodes(parent) {
+    while (parent.firstChild) {
+        parent.removeChild(parent.firstChild);
+    }
+}
 
 
 beginQuizBtn.addEventListener('click', beginQuiz);
 
 
-function correctOrIncorrectAnswerSelected(selectedAnswer, correctAnswer, nextQuestion) {
-    let answerButtonElements = document.getElementsByClassName('ans-btn');
+function answerSelected(selectedAnswer, correctAnswer) {
     if (selectedAnswer === correctAnswer) {
-        document.getElementById('result').innerHTML = 'You answered correctly!'
         score += 1;
-        nextQuestion = nextQuestion++;
-        newQuestionDisplayed(nextQuestion);
     } else {
-        document.getElementById('result').innerHTML = 'You answered incorrectly!'
         secondsLeft -= 5;
-        timeEl.textContent = secondsLeft + 's to finsh!';
-        nextQuestion = nextQuestion++;
-        newQuestionDisplayed(nextQuestion);
+        timeEl.textContent = secondsLeft + 's to finish!';
     }
-}
-
-
-function newQuestionDisplayed(nextQuestion) {
-    document.querySelector('#questions-box').innerHTML = '';
-    questionTitleEl.innerHTML = '';
-    let displayQuestion = qna[nextQuestion];
-    let options = displayQuestion.options;
-    questionTitleEl.textContent = displayQuestion.question;
-    for (let i = 0; i < options.length; i++) {
-        let answer = options[i];
-        let newEl = document.createElement('button');
-        newEl.className = 'ans-btn';
-        newEl.textContent = answer;
-        questionsContainerEl.append(newEl);
-        if (newEl) {
-            console.log(nextQuestion);
-            newEl.addEventListener('click', function (e) {
-                correctOrIncorrectAnswerSelected(answer, options[displayQuestion.answer], nextQuestion)
-    
-            })
-        }
+    if (currentQuestion === qna.length - 1) {
+        finisedQuiz();
+    } else {
+        currentQuestion++;
+        renderQuestion();
     }
-    
 }
 
 
@@ -159,21 +139,29 @@ function quizTime() {
     }, 1000);
 }
 
-let initialsInput = document.querySelector("#initials");
-let submitButton = document.querySelector("submit")
+let finalScore = document.getElementById('final-score');
+let submitButton = document.getElementById("submit");
 
-function renderLastInitial () {
-    var initials = localStorage.getItem("initials")
+function finisedQuiz() {
+    done.classList.remove('hide');
+    submitButton.classList.remove('hide');
+    questionsContainerEl.classList.add('hide');
+    finalScore.textContent = 'Your score is:' + score;
 }
 
-submitButton.addEventListener("click", function(event) {
+function saveScore(initials, score){
+    let scores = localStorage.getItem("scores");
+    if (scores === undefined){
+        scores = {}
+    } else {
+        scores = JSON.parse(scores);
+    }
+    scores[initials] = score;
+    localStorage.setItem("scores", JSON.stringify(scores));
+}
+
+submitButton.addEventListener("click", function (event) {
     event.preventDefault();
+    let initials = document.getElementById("initials").value;
+    saveScore(initials, score);
 })
-
-localStorage.setItem("initials", initialsInput);
-renderLastInitial;
-
-
-// function finisedQuiz () {
-//     done.classList.remove('hide');
-//     goBack.classList.remove('hide');
