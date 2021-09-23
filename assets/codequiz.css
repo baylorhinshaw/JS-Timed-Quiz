@@ -26,9 +26,17 @@ body {
     justify-content: center;
     width: 800px;
     max-width: 80%;
+    flex-direction: column;
 }
 
 .btn-grid {
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    gap: 10px;
+    margin: 10px 0;
+}
+
+.ans-btn {
     display: grid;
     grid-template-columns: repeat(2, auto);
     gap: 10px;
